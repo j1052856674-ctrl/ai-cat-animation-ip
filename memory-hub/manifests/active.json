@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "updated": "2026-06-14",
+  "project": "ai-cat-animation-ip",
+  "active": [
+    "decisions/toolchain-feishu-ingestion.md",
+    "status/current-execution-status.md",
+    "reviews/review-20260614-skills.md"
+  ]
+}

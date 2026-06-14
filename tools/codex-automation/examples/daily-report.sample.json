@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "report_date": "2026-06-14",
+    "day_of_week": "星期六",
+    "data_collected_at": "2026-06-14T08:15:00+08:00",
+    "account_name": "打工猫小橘",
+    "account_id": "user_xxxxxxxxxxxxx",
+    "total_followers": 2847,
+    "collection_method": "codex_computer_use"
+  },
+
+  "daily_summary": {
+    "new_videos_count": 1,
+    "total_plays": 3420,
+    "total_likes": 187,
+    "total_comments": 43,
+    "total_saves": 56,
+    "total_shares": 12,
+    "new_followers": 23,
+    "avg_completion_rate": 38.5,
+    "avg_interaction_rate": 5.8
+  },
+
+  "daily_changes": {
+    "plays_change": { "value": -12.5, "direction": "down", "text": "↓12.5% vs 昨日" },
+    "likes_change": { "value": 8.3, "direction": "up", "text": "↑8.3% vs 昨日" },
+    "comments_change": { "value": 15.2, "direction": "up", "text": "↑15.2% vs 昨日" },
+    "saves_change": { "value": -3.1, "direction": "down", "text": "↓3.1% vs 昨日" },
+    "shares_change": { "value": 5.0, "direction": "up", "text": "↑5.0% vs 昨日" },
+    "followers_change": { "value": -8.0, "direction": "down", "text": "↓8.0% vs 昨日" },
+    "completion_change": { "value": -2.1, "direction": "down", "text": "↓2.1pp vs 昨日" }
+  },
+
+  "videos_today": [
+    {
+      "id": "7123456789012345678",
+      "title": "当我告诉小橘今天又是周一",
+      "publish_time": "2026-06-14T18:30:00+08:00",
+      "plays": 3420,
+      "likes": 187,
+      "comments": 43,
+      "saves": 56,
+      "shares": 12,
+      "completion_rate": 38.5,
+      "interaction_rate": 5.8,
+      "new_followers": 23,
+      "duration_seconds": 15,
+      "cover_url": "https://example.com/cover.jpg",
+      "tags": ["猫", "打工猫", "周一", "猫咪日常"]
+    }
+  ],
+
+  "trend_7days": [
+    {
+      "date": "2026-06-08",
+      "plays": 5200, "likes": 210, "comments": 38, "saves": 62, "shares": 15,
+      "new_followers": 31, "completion_rate": 42.1
+    },
+    {
+      "date": "2026-06-09",
+      "plays": 4800, "likes": 195, "comments": 35, "saves": 58, "shares": 13,
+      "new_followers": 28, "completion_rate": 40.8
+    },
+    {
+      "date": "2026-06-10",
+      "plays": 6100, "likes": 245, "comments": 52, "saves": 71, "shares": 18,
+      "new_followers": 42, "completion_rate": 44.3
+    },
+    {
+      "date": "2026-06-11",
+      "plays": 3900, "likes": 168, "comments": 30, "saves": 49, "shares": 10,
+      "new_followers": 19, "completion_rate": 36.7
+    },
+    {
+      "date": "2026-06-12",
+      "plays": 4500, "likes": 192, "comments": 40, "saves": 55, "shares": 14,
+      "new_followers": 26, "completion_rate": 39.5
+    },
+    {
+      "date": "2026-06-13",
+      "plays": 3910, "likes": 173, "comments": 37, "saves": 58, "shares": 11,
+      "new_followers": 25, "completion_rate": 40.6
+    },
+    {
+      "date": "2026-06-14",
+      "plays": 3420, "likes": 187, "comments": 43, "saves": 56, "shares": 12,
+      "new_followers": 23, "completion_rate": 38.5
+    }
+  ],
+
+  "alerts": [
+    {
+      "severity": "warning",
+      "message": "播放量较昨日下降 12.5%，已连续 2 天下降趋势，建议关注封面点击率和推荐流量变化"
+    },
+    {
+      "severity": "info",
+      "message": "评论量逆势增长 15.2%，说明内容引发讨论意愿增强，互动质量在提升"
+    }
+  ],
+
+  "best_video": {
+    "title": "当我告诉小橘今天又是周一",
+    "cover_desc": "小橘一脸震惊.jpg",
+    "plays": 3420,
+    "likes": 187,
+    "comments": 43,
+    "saves": 56,
+    "shares": 12,
+    "completion": 38.5,
+    "interaction_rate": 5.8,
+    "new_followers": 23
+  },
+
+  "analysis": {
+    "has_alerts": true,
+    "overall_assessment": "今天发布的作品互动率表现不错（5.8% 高于近 7 日均值），评论活跃度明显提升但播放量有所下滑。整体处于正常波动范围，暂无明显风险信号。",
+    "whats_working": [
+      "标题制造了强画面联想（'告诉小橘今天又是周一' → 猫咪震惊表情），评论中用户自发脑补猫咪反应",
+      "猫猫 IP 辨识度持续累积，评论中出现'就是那只打工猫'等自主记忆点",
+      "发布时间选在 18:30（下班通勤高峰），匹配目标用户刷视频习惯"
+    ],
+    "whats_not_working": [
+      "完播率从 40.6% 降至 38.5%，可能在 5-10 秒区间出现了注意力断崖",
+      "播放量连续两天下滑，需排查是流量池切换还是封面点击率下降",
+      "涨粉转化率偏低，互动高但关注少，可能需要加强结尾关注引导"
+    ],
+    "cause_analysis": "播放量下滑主要可能原因为：（1）平台推荐流量进入第二波衰减期（正常规律）；（2）封面视觉冲击力不足导致点击率下降。评论逆势增长说明内容本身引发了情绪共鸣，问题更可能在封面/前 3 秒，而非内容价值。",
+    "next_actions": [
+      "优化下一条视频封面：大字标题 + 猫咪夸张表情 + 对比配色（测试 3 版封面 A/B）",
+      "在视频结尾增加明确行动号召：'你家猫周一是什么表情？评论区晒图'",
+      "关注明后两天推荐流量变化，若继续下降需调整发布时间窗口"
+    ],
+    "watch_items": [
+      "播放量是否在 2 天内止跌回升（正常波动上限）",
+      "收藏率持续在 1.6% 以上说明内容有长期价值——保持这个方向",
+      "评论区是否出现了新用户画像线索（如'学生党'占比增多），更新粉丝画像"
+    ]
+  }
+}

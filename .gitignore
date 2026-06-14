@@ -1,0 +1,39 @@
+# Local environment and secrets
+.env
+.env.*
+*.local
+*.key
+*.pem
+*.p12
+*.pfx
+*secret*
+*token*
+
+# Claude local/session settings
+.claude/settings.local.json
+.claude/settings-backup.json
+.claude/**/settings.local.json
+
+# Authentication artifacts
+lark-auth-qr.png
+*-auth-qr.png
+*auth-qr*.png
+
+# Dependencies and build outputs
+node_modules/
+dist/
+build/
+out/
+.next/
+.cache/
+
+# Logs and temporary files
+*.log
+logs/
+tmp/
+temp/
+.DS_Store
+Thumbs.db
+
+# Backups
+.backups/
