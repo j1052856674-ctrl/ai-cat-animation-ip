@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "topic-card.schema.json",
+  "title": "Topic Card",
+  "description": "选题推荐模块产出的单条选题卡，02-topic → 03-script 交接物",
+  "type": "object",
+  "required": ["id", "title", "platforms", "content_type", "rationale", "priority"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "选题唯一标识，格式 topic-{YYYYMMDD}-{序号}",
+      "pattern": "^topic-\\d{8}-\\d{3}$"
+    },
+    "title": {
+      "type": "string",
+      "description": "候选标题，模仿爆款标题结构",
+      "maxLength": 40
+    },
+    "platforms": {
+      "type": "array",
+      "description": "适合平台列表",
+      "items": {
+        "type": "string",
+        "enum": ["小红书", "抖音", "B站", "全平台"]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "content_type": {
+      "type": "string",
+      "description": "内容类型",
+      "enum": ["打工人嘴替", "吃饭治愈", "猫式哲学", "金句卡", "小剧场", "职场配音"]
+    },
+    "rationale": {
+      "type": "string",
+      "description": "为什么适合：基于策略/画像/爆款规律的论证，50字以内",
+      "maxLength": 100
+    },
+    "cover_direction": {
+      "type": "string",
+      "description": "封面方向：核心文字+视觉方向建议",
+      "maxLength": 80
+    },
+    "priority": {
+      "type": "string",
+      "description": "优先级：按匹配策略度+爆款概率+制作成本综合判定",
+      "enum": ["high", "medium", "low"]
+    },
+    "risk": {
+      "type": "string",
+      "description": "可能翻车的原因提示",
+      "maxLength": 100
+    },
+    "content_pillar": {
+      "type": "string",
+      "description": "所属内容支柱",
+      "enum": ["打工人嘴替", "吃饭治愈", "猫式哲学"]
+    }
+  }
+}

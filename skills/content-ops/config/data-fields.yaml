@@ -1,0 +1,317 @@
+# data-fields.yaml — 数据字段来源矩阵
+# 定义竞品采集、发布作品、复盘诊断三组字段及各自的权威来源
+# source 取值: OpenCLI / Chrome / manual / Codex / platform_admin / not_available
+
+# ---- 竞品采集字段 ----
+competitor_fields:
+  - field: "样本ID"
+    type: "string"
+    source: "manual"
+    note: "格式 CR-YYYYMMDD-序号"
+
+  - field: "平台"
+    type: "enum[小红书, 抖音]"
+    source: "OpenCLI"
+    note: "命令来源直接确定"
+
+  - field: "关键词"
+    type: "string"
+    source: "OpenCLI"
+    note: "保留原始搜索词"
+
+  - field: "方向归类"
+    type: "enum[打工嘴替, 治愈陪伴, 猫咪短剧, 纯萌宠, AI视觉]"
+    source: "manual"
+    note: "人工/模型分类"
+
+  - field: "账号名"
+    type: "string"
+    source: "OpenCLI"
+    note: "搜索结果或详情页作者名"
+
+  - field: "账号粉丝量"
+    type: "number"
+    source: "OpenCLI"
+    note: "小红书可用OpenCLI；抖音可能需Chrome核验"
+
+  - field: "发布时间"
+    type: "date"
+    source: "OpenCLI"
+    note: "详情页字段；缺失则留空不猜测"
+
+  - field: "链接"
+    type: "url"
+    source: "OpenCLI"
+    note: "必填，主去重键"
+
+  - field: "标题"
+    type: "text"
+    source: "OpenCLI"
+    note: "优先详情页标题，其次搜索摘要"
+
+  - field: "cover_url"
+    type: "url"
+    source: "OpenCLI"
+    note: "封面图缩略图链接，OpenCLI返回的文本URL。不经过模型解析为图片，供多模态模型后续分析使用。可能为空。"
+
+  - field: "封面描述"
+    type: "text"
+    source: "manual"
+    note: "主体、颜色、文字、表情"
+
+  - field: "内容形式"
+    type: "enum[图文, 动画, 实拍, 混剪, 配音, 无法判断]"
+    source: "manual"
+    note: "人工判断"
+
+  - field: "时长秒"
+    type: "number"
+    source: "OpenCLI"
+    note: "视频时长"
+
+  - field: "点赞"
+    type: "number"
+    source: "OpenCLI"
+    note: "小红书可用OpenCLI；抖音关键样本需Chrome核验"
+
+  - field: "收藏"
+    type: "number"
+    source: "OpenCLI"
+    note: "小红书重点；抖音如可见则填"
+
+  - field: "评论"
+    type: "number"
+    source: "OpenCLI"
+    note: "小红书可结合comments命令；抖音需谨慎"
+
+  - field: "分享"
+    type: "number"
+    source: "OpenCLI"
+    note: "抖音字段不可靠时标待核验"
+
+  - field: "爆款钩子"
+    type: "text"
+    source: "manual"
+    note: "前3秒或封面第一信息，人工拆解"
+
+  - field: "高赞评论TOP3"
+    type: "text"
+    source: "OpenCLI"
+    note: "小红书可用comments命令"
+    fallback_source: "Chrome"
+    fallback_note: "抖音OpenCLI不可用时需Chrome单条采集"
+
+  - field: "可复用点"
+    type: "text"
+    source: "manual"
+    note: "标题、封面、节奏、人设、评论引导"
+
+  - field: "不应照搬点"
+    type: "text"
+    source: "manual"
+    note: "风险、侵权、低质套路"
+
+  - field: "数据可信度"
+    type: "enum[OpenCLI, Chrome核验, 手动补录, 待核验]"
+    source: "manual"
+    note: "由采集方式综合判定"
+
+  - field: "采集时间"
+    type: "datetime"
+    source: "manual"
+    note: "Asia/Shanghai，格式 YYYY-MM-DD HH:mm"
+
+# ---- 已发布作品字段 ----
+published_work_fields:
+  - field: "作品ID"
+    type: "string"
+    source: "manual"
+    note: "格式 AB-YYYYMMDD-序号"
+
+  - field: "发布日期"
+    type: "date"
+    source: "manual"
+
+  - field: "发布时间"
+    type: "time"
+    source: "manual"
+
+  - field: "平台"
+    type: "enum[小红书, 抖音]"
+    source: "manual"
+
+  - field: "内容类型"
+    type: "enum[打工人嘴替, 吃饭治愈, 猫式哲学, 金句卡, 小剧场, 职场配音]"
+    source: "manual"
+
+  - field: "内容支柱"
+    type: "enum[打工人嘴替, 吃饭治愈, 猫式哲学]"
+    source: "manual"
+
+  - field: "标题"
+    type: "text"
+    source: "manual"
+    note: "发布时的标题/文案前30字"
+
+  - field: "时长(秒)"
+    type: "number"
+    source: "manual"
+
+  - field: "BGM"
+    type: "text"
+    source: "manual"
+
+  - field: "钩子类型"
+    type: "enum[情绪直给, 问题开题, 场景闪回, 金句突脸, 声音钩子]"
+    source: "manual"
+
+  - field: "标签"
+    type: "string[]"
+    source: "manual"
+
+  - field: "是否追热点"
+    type: "boolean"
+    source: "manual"
+
+  - field: "备注"
+    type: "text"
+    source: "manual"
+
+  # -- 小红书指标 --
+  - field: "点赞数"
+    type: "number"
+    source: "platform_admin"
+    note: "小红书创作者后台 / Codex 管线待建设"
+
+  - field: "收藏数"
+    type: "number"
+    source: "platform_admin"
+
+  - field: "评论数"
+    type: "number"
+    source: "platform_admin"
+
+  - field: "分享数"
+    type: "number"
+    source: "platform_admin"
+
+  - field: "播放量/阅读量"
+    type: "number"
+    source: "platform_admin"
+
+  - field: "涨粉数"
+    type: "number"
+    source: "manual"
+    note: "需手动记录发布前粉丝基数"
+
+  # -- 抖音指标 --
+  - field: "完播率"
+    type: "percentage"
+    source: "platform_admin"
+    note: "抖音创作者后台"
+
+  # -- 通用分析字段 --
+  - field: "赞藏率"
+    type: "number"
+    source: "manual"
+    note: "计算: (点赞+收藏)/阅读量"
+
+  - field: "评论率"
+    type: "number"
+    source: "manual"
+    note: "计算: 评论/阅读量"
+
+  - field: "涨粉率"
+    type: "number"
+    source: "manual"
+    note: "计算: 涨粉/阅读量"
+
+  - field: "互动率(抖音)"
+    type: "number"
+    source: "manual"
+    note: "计算: (点赞+评论+分享+收藏)/播放量"
+
+  - field: "爆款指数"
+    type: "number"
+    source: "manual"
+    note: "按平台公式自动计算"
+
+  - field: "高赞评论TOP3"
+    type: "text"
+    source: "platform_admin"
+    note: "选填，爆款才做"
+
+  - field: "用户情绪倾向"
+    type: "enum[共鸣, 吐槽补充, 治愈, 无感, 负面]"
+    source: "manual"
+
+  - field: "选题灵感"
+    type: "text"
+    source: "manual"
+    note: "从评论区提取"
+
+# ---- 复盘诊断字段 ----
+review_diagnostic_fields:
+  - field: "曝光量"
+    type: "number"
+    source: "platform_admin"
+    used_by: "选题诊断"
+    note: "曝光低=选题窄众或算法未推"
+
+  - field: "播放量"
+    type: "number"
+    source: "platform_admin"
+    used_by: "核心数据看板"
+
+  - field: "点击率"
+    type: "percentage"
+    source: "not_available"
+    formula: "播放/曝光（需平台提供曝光数据）"
+    used_by: "封面+标题诊断"
+    note: "小红书/抖音创作者后台可查；Codex管线待建设"
+
+  - field: "前3秒留存率"
+    type: "percentage"
+    source: "platform_admin"
+    used_by: "开头钩子诊断"
+    note: "大量流失在前3秒=钩子不够猛"
+
+  - field: "完播率"
+    type: "percentage"
+    source: "platform_admin"
+    used_by: "内容节奏诊断"
+    note: "中途大量流失=某段内容拖沓"
+
+  - field: "互动率"
+    type: "number"
+    source: "platform_admin"
+    used_by: "内容价值诊断"
+    note: "看完不互动=不够触动/不够有用"
+
+  - field: "关注转化率"
+    type: "percentage"
+    source: "not_available"
+    used_by: "结尾引导诊断"
+    note: "大多数平台不直接提供；可通过涨粉数/播放量估算"
+
+  - field: "评论率"
+    type: "number"
+    source: "platform_admin"
+    used_by: "结尾引导+内容共鸣诊断"
+
+  - field: "观看时长分布"
+    type: "number[]"
+    source: "Codex"
+    used_by: "内容节奏诊断"
+    note: "精确到秒级的观看趋势，定位具体流失点；Codex管线待建设，当前实际来源为 platform_admin（需手动导出）"
+
+  - field: "互动率(赞评收转)"
+    type: "number"
+    source: "Codex"
+    used_by: "综合诊断"
+    note: "多维度互动归一；Codex管线待建设，当前需从 platform_admin 手动计算"
+
+  - field: "涨粉数"
+    type: "number"
+    source: "platform_admin"
+    used_by: "结尾引导+整体吸引力诊断"

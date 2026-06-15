@@ -38,3 +38,7 @@ Thumbs.db
 
 # Backups
 .backups/
+# Feishu gateway local config and runtime state
+tools/feishu-agent-gateway/config.json
+tools/feishu-agent-gateway/runtime/
+tools/feishu-agent-gateway/cloudflared/config.yml

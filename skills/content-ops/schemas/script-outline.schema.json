@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "script-outline.schema.json",
+  "title": "Script Outline",
+  "description": "脚本创作模块产出的结构化脚本大纲，03-script → 04-cover 交接物",
+  "type": "object",
+  "required": ["script_id", "topic_id", "hooks", "segments", "ending_guides", "platforms"],
+  "properties": {
+    "script_id": {
+      "type": "string",
+      "description": "脚本唯一标识，格式 script-{YYYYMMDD}-{序号}",
+      "pattern": "^script-\\d{8}-\\d{3}$"
+    },
+    "topic_id": {
+      "type": "string",
+      "description": "关联选题卡ID"
+    },
+    "hooks": {
+      "type": "array",
+      "description": "开头3秒钩子（至少3个备选）",
+      "items": {
+        "type": "object",
+        "required": ["text", "type"],
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "一句话钩子文案",
+            "maxLength": 80
+          },
+          "type": {
+            "type": "string",
+            "description": "钩子类型",
+            "enum": ["反问", "反差", "数据冲击", "痛点共鸣", "悬念", "情绪先行"]
+          }
+        }
+      },
+      "minItems": 3,
+      "maxItems": 5
+    },
+    "segments": {
+      "type": "array",
+      "description": "分段大纲（3-5段）",
+      "items": {
+        "type": "object",
+        "required": ["what", "visual", "why"],
+        "properties": {
+          "what": {
+            "type": "string",
+            "description": "核心信息/观点，一句话概括",
+            "maxLength": 120
+          },
+          "visual": {
+            "type": "string",
+            "description": "画面建议：口播直拍/B-roll/动画/文字卡片/场景切换",
+            "maxLength": 80
+          },
+          "why": {
+            "type": "string",
+            "description": "节奏论证：为什么这样安排",
+            "maxLength": 100
+          }
+        }
+      },
+      "minItems": 3,
+      "maxItems": 5
+    },
+    "voice_notes": {
+      "type": "object",
+      "description": "口播要点",
+      "properties": {
+        "tone": {
+          "type": "string",
+          "description": "语气建议",
+          "enum": ["轻松", "严肃", "兴奋", "娓娓道来", "慵懒"]
+        },
+        "pace_hints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "节奏提示列表"
+        },
+        "keywords_emphasis": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "需要重音强调的关键词"
+        }
+      }
+    },
+    "ending_guides": {
+      "type": "array",
+      "description": "结尾互动引导（至少3个备选）",
+      "items": {
+        "type": "object",
+        "required": ["text", "type"],
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "一句话引导文案",
+            "maxLength": 60
+          },
+          "type": {
+            "type": "string",
+            "description": "引导类型",
+            "enum": ["提问互动", "投票", "关注理由", "下期预告", "评论区召唤"]
+          }
+        }
+      },
+      "minItems": 3
+    },
+    "platforms": {
+      "type": "array",
+      "description": "双版本适配（至少含小红书版和抖音版）",
+      "items": {
+        "type": "object",
+        "required": ["platform", "duration_seconds", "segments_count", "hook_intensity", "style_notes"],
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": ["小红书", "抖音", "B站"]
+          },
+          "duration_seconds": {
+            "type": "number",
+            "description": "预估时长（秒）"
+          },
+          "segments_count": {
+            "type": "integer",
+            "description": "适配后的分段数"
+          },
+          "hook_intensity": {
+            "type": "string",
+            "description": "钩子力度",
+            "enum": ["温和", "中等", "强力"]
+          },
+          "style_notes": {
+            "type": "string",
+            "description": "平台特化风格说明",
+            "maxLength": 120
+          }
+        }
+      },
+      "minItems": 2
+    }
+  }
+}

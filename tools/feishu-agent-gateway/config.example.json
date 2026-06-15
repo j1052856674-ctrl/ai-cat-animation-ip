@@ -1,0 +1,12 @@
+{
+  "port": 8787,
+  "path": "/feishu/events",
+  "appId": "",
+  "appSecret": "",
+  "verificationToken": "",
+  "encryptKey": "",
+  "replyMode": "dry-run",
+  "larkIdentity": "user",
+  "replyProvider": "sdk",
+  "sdkFallbackToCli": true
+}

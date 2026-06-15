@@ -1,0 +1,123 @@
+# platform-matrix.yaml — 平台差异参数矩阵
+# 集中定义小红书/抖音/B站的内容格式、发布参数与核心指标
+# 单点维护，避免跨文件散落修改
+
+platforms:
+  xiaohongshu:
+    name: 小红书
+    content_focus: "金句卡片 + 治愈图文，强文案导向"
+    aspect_ratio: "3:4"
+    video_duration:
+      min: 60
+      max: 90
+      unit: seconds
+      note: "金句卡可更短(10-15s)"
+    title:
+      max_chars: 20
+      style: "笔记风，可用emoji分段，信息密度高，偏干货感和利他性"
+    description:
+      style: "正文文案，末尾引导收藏/评论，转化指令不折叠"
+    tags:
+      count: [3, 5]
+      note: "精准长尾+大词各半"
+    publish_time:
+      - "12:00-13:00"
+      - "18:00-19:00"
+      note: "通勤+午休高峰"
+    key_metrics:
+      - name: "赞藏率"
+        formula: "(点赞+收藏)/阅读量"
+        weight: 0.5
+      - name: "评论率"
+        formula: "评论/阅读量"
+        weight: 0.3
+      - name: "涨粉率"
+        formula: "涨粉/阅读量"
+        weight: 0.2
+    viral_index:
+      formula: "赞藏率×0.5 + 评论率×0.3 + 涨粉率×0.2"
+      thresholds:
+        viral: "> 0.15"
+        mild_hit: "> 0.08"
+        normal: "0.03 - 0.08"
+        low: "< 0.03"
+    interaction_style: "评论区引导'你的周一be like？'类代入式互动"
+
+  douyin:
+    name: 抖音
+    content_focus: "短动画 + 配音，强节奏导向"
+    aspect_ratio: "9:16"
+    video_duration:
+      min: 30
+      max: 60
+      unit: seconds
+      note: "短剧型可到90s"
+    title:
+      max_chars: 30
+      style: "对话风，口语化，5-15字为主，情绪强钩子猛"
+    description:
+      style: "简介文案+话题标签+@引导，转化指令末尾放关注/点赞"
+    tags:
+      count: [2, 3]
+      note: "挑最核心的2-3个标签+1个IP标签"
+    publish_time:
+      - "12:00-13:00"
+      - "18:00-19:00"
+      - "21:00-22:00"
+      note: "午休+晚高峰+睡前"
+    key_metrics:
+      - name: "完播率"
+        formula: "完整播放/总播放"
+        weight: 0.4
+      - name: "互动率"
+        formula: "(点赞+评论+分享+收藏)/播放量"
+        weight: 0.4
+      - name: "涨粉率"
+        formula: "涨粉/播放量"
+        weight: 0.2
+    viral_index:
+      formula: "完播率×0.4 + 互动率×0.4 + 涨粉率×0.2"
+      thresholds:
+        viral: "> 0.20"
+        mild_hit: "> 0.12"
+        normal: "0.05 - 0.12"
+        low: "< 0.05"
+    interaction_style: "评论区引导'@你的饭搭子'类分享式互动"
+
+  bilibili:
+    name: B站
+    content_focus: "深度内容，信息量大，利于搜索和系列追更"
+    aspect_ratio: "16:9"
+    video_duration:
+      min: 180
+      max: 480
+      unit: seconds
+      note: "3-8分钟，分段大纲5段以上"
+    title:
+      max_chars: 40
+      style: "信息量更大，含关键词利于搜索，可带系列编号"
+    description:
+      style: "完整说明文案，含章节时间戳、相关链接"
+    tags:
+      count: [5, 10]
+      note: "多标签覆盖搜索入口"
+    publish_time:
+      - "12:00-13:00"
+      - "18:00-20:00"
+      note: "午休+晚间"
+    key_metrics:
+      - name: "播放量"
+      - name: "互动率"
+        formula: "(点赞+评论+收藏+分享+弹幕)/播放量"
+      - name: "投币数"
+      - name: "收藏率"
+        formula: "收藏/播放量"
+    viral_index:
+      formula: "暂无标准化公式（待数据积累），暂用互动率加权"
+      thresholds:
+        viral: "待校准"
+        mild_hit: "待校准"
+        normal: "待校准"
+        low: "待校准"
+    interaction_style: "评论+弹幕互动，引导三连、关注和系列追更"
+    note: "B站为可选平台，初期集中小红书+抖音，B站后续按需扩展"

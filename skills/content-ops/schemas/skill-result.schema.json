@@ -1,0 +1,69 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "skill-result.schema.json",
+  "title": "Skill Result",
+  "description": "统一完成信号——每个模块执行完毕后必须输出的结果载体",
+  "type": "object",
+  "required": ["skill_run_id", "module", "status", "timestamp", "outputs"],
+  "properties": {
+    "skill_run_id": {
+      "type": "string",
+      "description": "唯一运行标识，格式 content-ops-{module}-{YYYYMMDD}-{序号}",
+      "pattern": "^content-ops-[a-z0-9-]+-\\d{8}-\\d{3}$"
+    },
+    "module": {
+      "type": "string",
+      "description": "执行的模块编号",
+      "enum": [
+        "00-competitor-data",
+        "01-strategy",
+        "02-topic",
+        "03-script",
+        "04-cover",
+        "05-review",
+        "06-onboarding"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "description": "执行状态",
+      "enum": ["completed", "degraded", "blocked", "needs_human"]
+    },
+    "timestamp": {
+      "type": "string",
+      "description": "ISO 8601 时间戳，时区 Asia/Shanghai",
+      "format": "date-time"
+    },
+    "outputs": {
+      "type": "object",
+      "description": "模块核心输出摘要，具体字段由各模块schema定义",
+      "minProperties": 1
+    },
+    "next_step": {
+      "type": "string",
+      "description": "建议的下一步操作或下游模块"
+    },
+    "blocking_reason": {
+      "type": "string",
+      "description": "status 为 blocked 时必填；说明阻塞原因"
+    },
+    "warnings": {
+      "type": "array",
+      "description": "非阻塞性警告列表",
+      "items": { "type": "string" }
+    },
+    "dependencies_used": {
+      "type": "array",
+      "description": "本次执行实际使用到的依赖清单",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "type": { "type": "string", "enum": ["file", "tool", "skill"] },
+          "status": { "type": "string", "enum": ["available", "degraded", "unavailable"] }
+        },
+        "required": ["name", "type", "status"]
+      }
+    }
+  }
+}

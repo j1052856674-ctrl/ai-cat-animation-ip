@@ -1,0 +1,16 @@
+{
+  "name": "ai-cat-animation-ip",
+  "version": "1.0.0",
+  "description": "> AI 动画 → 宠物 IP → 表情包/带货变现",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "js-yaml": "^4.2.0"
+  }
+}

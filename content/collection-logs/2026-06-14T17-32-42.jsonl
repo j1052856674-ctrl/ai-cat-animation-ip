@@ -1,0 +1,11 @@
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"AI治愈动画 猫","platform":"抖音","raw_count":10,"after_time_filter":10,"after_dedup":10,"final_count":10,"anomalies":["抖音无发布时间","plays/comments/shares全为0"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"即梦 猫","platform":"抖音","raw_count":10,"after_time_filter":10,"after_dedup":10,"final_count":10,"anomalies":["抖音无发布时间","plays/comments/shares全为0"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"AI猫咪剧情","platform":"抖音","raw_count":10,"after_time_filter":10,"after_dedup":10,"final_count":10,"anomalies":["抖音无发布时间","plays/comments/shares全为0"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"猫咪小剧场","platform":"抖音","raw_count":10,"after_time_filter":10,"after_dedup":9,"final_count":9,"anomalies":["抖音无发布时间","plays/comments/shares全为0","1条去重(AI胖橘剧场)"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"猫猫动画","platform":"小红书","raw_count":10,"after_time_filter":10,"after_dedup":1,"final_count":1,"anomalies":["9条>30天丢弃(90%)→方向枯竭"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"治愈猫咪","platform":"小红书","raw_count":10,"after_time_filter":10,"after_dedup":0,"final_count":0,"anomalies":["9条>30天丢弃+1条不相关(游戏推广)→全部丢弃"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"治愈猫咪","platform":"抖音","raw_count":10,"after_time_filter":10,"after_dedup":9,"final_count":9,"anomalies":["抖音无发布时间","plays/comments/shares全为0","1条去重"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"猫咪日常","platform":"小红书","raw_count":10,"after_time_filter":10,"after_dedup":4,"final_count":4,"anomalies":["6条>30天丢弃(60%)→方向枯竭"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"猫咪日常","platform":"抖音","raw_count":10,"after_time_filter":10,"after_dedup":10,"final_count":10,"anomalies":["抖音无发布时间","plays/comments/shares全为0","全实拍内容非AI"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"打工猫","platform":"小红书","raw_count":10,"after_time_filter":10,"after_dedup":1,"final_count":1,"anomalies":["9条>30天丢弃(90%)→方向枯竭"]}
+{"timestamp":"2026-06-14T17:32:42.336Z","keyword":"打工猫","platform":"抖音","raw_count":10,"after_time_filter":10,"after_dedup":10,"final_count":10,"anomalies":["抖音无发布时间","plays/comments/shares全为0"]}

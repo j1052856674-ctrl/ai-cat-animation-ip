@@ -1,0 +1,146 @@
+# toolchain.yaml — 内容运营工具链定义
+# 声明 skills/content-ops 依赖的所有工具、归属层级、用途、降级路径和调用规范
+
+# ============================================================
+# 工具分层架构
+# ============================================================
+#
+#  Layer 0: 系统工具 (全局 npm，非项目管理)
+#  Layer 1: 项目工具 (tools/，可执行代码)
+#  Layer 2: Skill 指令 (skills/，Claude 操作手册)
+#
+#  Layer 2 的 depends_on 声明 Layer 0/1 的工具；
+#  Layer 1 的 README 声明其服务于哪些 Skill。
+# ============================================================
+
+architecture:
+  overview: |
+    内容运营工具链分三层：
+    - 系统工具（OpenCLI / lark-cli）做采集和写入
+    - 项目工具（feishu-agent-gateway）做群消息桥接
+    - Skill 指令（content-ops）告诉 Claude 怎么组合使用它们
+
+    tools/ 和 skills/ 的关系：
+    - skills/content-ops = "操作手册"（告诉 Claude 竞品怎么采集、选题怎么判断）
+    - tools/feishu-agent-gateway = "机器人手臂"（收飞书消息、发回复）
+    - OpenCLI / lark-cli = "外部工具"（浏览器自动化、飞书API）
+
+    tools/ 不属于 skills/，因为它们不是 Prompt 指令，是可执行运行时。
+    skills/content-ops/SKILL.md 的 depends_on 声明了所有工具依赖。
+
+# ============================================================
+# Layer 0: 系统工具
+# ============================================================
+system_tools:
+  - name: OpenCLI
+    version: ">=1.8"
+    install: "npm install -g @jackwener/opencli"
+    type: "browser automation"
+    layer: 0
+    purpose: "小红书/抖音搜索采集 + 详情页读取"
+    commands:
+      - name: "xiaohongshu search"
+        usage: 'opencli xiaohongshu search "<关键词>" --limit N -f yaml 2>/dev/null'
+        note: "2>/dev/null 静默 OpenCLI 全局模块加载警告（79个非相关模块的 access 声明缺失，走 stderr，不影响数据）"
+        returns: "搜索结果列表（rank, author, title, likes, published_at, url）"
+        limit: "1-20"
+      - name: "xiaohongshu note"
+        usage: 'opencli xiaohongshu note "<完整URL+?xsec_token=...>" -f yaml 2>/dev/null'
+        note: "⚠️ v1.8.3+ 需要完整签名URL，不再接受 note-id。xsec_token 从搜索结果 url 中获取"
+        returns: "笔记详情（内容、互动数据）"
+      - name: "xiaohongshu comments"
+        usage: 'opencli xiaohongshu comments "<完整URL>" --limit 5 -f yaml 2>/dev/null'
+        note: "同上，需要完整签名URL"
+      - name: "douyin search"
+        usage: 'opencli douyin search "<关键词>" --limit N -f yaml 2>/dev/null'
+        note: "抖音 plays/comments/shares 常返回 0，关键样本需 Chrome 核验"
+        returns: "搜索结果列表（desc, author, url, likes）"
+        limit: "1-30"
+    known_issues:
+      - issue: "全局模块加载警告"
+        severity: "cosmetic"
+        description: "每次运行加载 ~79 个 OpenCLI 模块，未声明 access 的产生 stderr 警告"
+        mitigation: "命令末尾加 2>/dev/null"
+      - issue: "xiaohongshu note 需要完整签名 URL"
+        severity: "breaking"
+        description: "v1.8.3 起 note/comments 需要带 xsec_token 的完整 URL，不再接受 note-id"
+        mitigation: "从搜索结果 url 字段提取完整 URL 直接传入"
+      - issue: "douyin 互动数据不完整"
+        severity: "data-quality"
+        description: "抖音搜索返回的 plays/comments/shares 通常为 0"
+        mitigation: "关键样本用 Chrome 打开详情页做视觉核验"
+    fallback: "Chrome 手动采集（单条核验 + 补采，不做批量浏览器抓取）"
+    security: "不绕过验证码、登录、风控；不读取/导出 cookie 或 token"
+
+  - name: lark-cli
+    version: ">=1.0.53"
+    install: "npm install -g @larksuite/cli"
+    type: "API client"
+    layer: 0
+    purpose: "飞书多维表格/电子表格读写 + IM 消息发送"
+    commands:
+      - name: "auth status"
+        usage: "lark-cli auth status"
+        note: "检查 bot/user 身份状态；未授权时提示用户手动配置"
+      - name: "base record-batch-create"
+        usage: "lark-cli base +record-batch-create --help"
+        note: "批量写入竞品样本到多维表格"
+      - name: "base record-upsert"
+        usage: "lark-cli base +record-upsert --help"
+        note: "按 record-id 更新已有记录；不自动按业务键去重"
+      - name: "sheets cells-set"
+        usage: "lark-cli sheets +cells-set --help"
+        note: "电子表格兜底方案"
+      - name: "im messages-reply"
+        usage: "lark-cli im +messages-reply --help"
+        note: "发送飞书消息回复"
+    known_issues:
+      - issue: "scopes 未应用时静默失败"
+        severity: "blocking"
+        description: "飞书应用 scopes 变更后需在控制台保存/发布/审核通过才能生效"
+        mitigation: "运行前先 lark-cli auth status 确认 scopes 包含所需权限"
+    fallback: "降级为本地 content/ 文件手动维护"
+
+  - name: Chrome
+    type: "browser"
+    layer: 0
+    purpose: "竞品页面浏览 + 平台后台数据查看 + OpenCLI 不可用时的兜底"
+    usage: "手动打开浏览器，用于：登录态确认、详情页视觉核验、OpenCLI 不完整字段的单条补采"
+    security: "不模拟登录、不存储凭据、不绕过 OAuth；不执行点赞/评论/关注/私信/发布"
+
+# ============================================================
+# Layer 1: 项目工具
+# ============================================================
+project_tools:
+  - name: feishu-agent-gateway
+    path: "tools/feishu-agent-gateway/"
+    type: "HTTP server"
+    layer: 1
+    purpose: "飞书群消息桥接——接收 webhook 事件，路由命令，写入 inbox，通过 lark-cli 回复"
+    serves_skill: "content-ops"
+    runtime: "Node.js"
+    entry: "server.js"
+    commands:
+      - "/status"
+      - "/help"
+      - "/采集 <关键词>"
+      - "/选题"
+    state:
+      reply_mode: "send"
+      identity: "bot"
+    inbox: "runtime/inbox.ndjson"
+    notes: |
+      不直接调用 Skill，而是作为飞书 ← → 本地 Claude 的通道。
+      群成员发送消息 → gateway 收到 webhook → 写入 inbox → Claude 读取 inbox 并回复 → gateway 通过 lark-cli 发送回复。
+      未来可对接 Codex 管线实现自动回复。
+
+# ============================================================
+# Layer 2 引用 (skills/content-ops/)
+# ============================================================
+skill_reference:
+  entry: "skills/content-ops/SKILL.md"
+  depends_on:
+    - system_tools.OpenCLI
+    - system_tools.lark-cli
+    - system_tools.Chrome
+    - project_tools.feishu-agent-gateway

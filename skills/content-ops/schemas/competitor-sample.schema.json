@@ -1,0 +1,145 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "competitor-sample.schema.json",
+  "title": "Competitor Sample",
+  "description": "竞品数据采集模块产出的单条竞品样本。搜索级字段由 Claude 自动填充，人类核验字段由创作者打开视频后填写。",
+  "type": "object",
+  "required": ["sample_id", "platform", "search_keyword", "author", "link", "published_at", "collected_at", "data_confidence"],
+  "properties": {
+
+    "sample_id": {
+      "type": "string",
+      "description": "样本唯一标识，格式 CR-YYYYMMDD-序号",
+      "pattern": "^CR-\\d{8}-\\d{3}$"
+    },
+    "platform": {
+      "type": "string",
+      "enum": ["小红书", "抖音"]
+    },
+    "search_keyword": {
+      "type": "string",
+      "description": "通过哪个搜索词找到"
+    },
+
+    "_search_basics": {
+      "type": "object",
+      "description": "搜索级基础字段（Claude 自动填充）",
+      "properties": {
+        "title": { "type": "string", "description": "原标题，截断前 60 字" },
+        "link": { "type": "string", "format": "uri", "description": "完整链接，必填，主去重键" },
+        "author": { "type": "string", "description": "作者/账号名" },
+        "likes": { "type": ["number", "string"], "description": "点赞数；抖音常不准" },
+        "collects": { "type": ["number", "string"], "description": "收藏数；小红书可用" },
+        "comments_count": { "type": ["number", "string"], "description": "评论数；抖音常为 0" },
+        "published_at": { "type": "string", "format": "date", "description": "发布时间 YYYY-MM-DD" },
+        "time_window": {
+          "type": "string",
+          "enum": ["热点", "趋势", "待核验"],
+          "description": "≤7天=热点 / 8-30天=趋势 / >30天=丢弃不入库 / 发布时间为空=待核验"
+        },
+        "cover_url": {
+          "type": "string",
+          "description": "封面图URL，OpenCLI返回的缩略图链接，供多模态模型后续分析使用。可能为空。"
+        },
+        "direction_type": {
+          "type": "string",
+          "enum": ["打工嘴替", "治愈陪伴", "猫咪短剧", "纯萌宠", "AI视觉", "待判断"],
+          "description": "方向归类，用于方向分析阶段按类别统计"
+        }
+      }
+    },
+
+    "_claude_annotations": {
+      "type": "object",
+      "description": "搜索级标注字段（Claude 从 tags/desc 推断）",
+      "properties": {
+        "content_form": {
+          "type": "string",
+          "enum": ["动画", "图文", "实拍", "混剪", "配音", "无法判断"],
+          "description": "从 #ai漫剧 #ai短剧 → 动画；#图文 → 图文；否则从标题推断"
+        },
+        "narrative_type": {
+          "type": "string",
+          "enum": ["猫vlog", "猫Meme", "AI漫剧", "情感短片", "教程", "搞笑片段", "无法判断"],
+          "description": "从 #vlog #猫meme #ai漫剧 #教程 标签判断"
+        },
+        "emotion_tone": {
+          "type": "string",
+          "enum": ["治愈", "搞笑", "萌", "温暖", "社畜共鸣", "无法判断"],
+          "description": "从 #治愈 #搞笑 #可爱 #萌 标签判断"
+        },
+        "visual_style_tool": {
+          "type": "string",
+          "enum": ["可灵AI", "即梦AI", "Midjourney+Runway", "其他", "待核验"],
+          "description": "从 #可灵AI #即梦 #midjourney 判断；无标注=待核验"
+        },
+        "character_type": {
+          "type": "string",
+          "enum": ["固定橘猫", "固定其他猫", "无固定角色", "系列化角色群", "待核验"],
+          "description": "从标题+作者名识别人物名；镜头中是否固定=待核验"
+        }
+      }
+    },
+
+    "_human_verify": {
+      "type": "object",
+      "description": "人类核验字段（创作者打开视频链接后填写，Claude 不可代填）",
+      "properties": {
+        "rhythm_type": {
+          "type": "string",
+          "enum": ["≤15s快", "16-30s中", ">30s慢", "待核验"],
+          "description": "看视频确认时长和节奏 —— Claude 无法从搜索 API 获取"
+        },
+        "hook_strategy": {
+          "type": "string",
+          "enum": ["画面冲击", "文字悬念", "声音", "动作", "无", "待核验"],
+          "description": "看前 3 秒用什么抓人 —— Claude 无法看视频"
+        },
+        "visual_style_confirmed": {
+          "type": "string",
+          "enum": ["可灵AI", "即梦AI", "Midjourney+Runway", "其他", "待核验"],
+          "description": "实际看视频确认/修正 Claude 的推断"
+        },
+        "character_consistency": {
+          "type": "string",
+          "enum": ["✅ 固定角色", "⚠️ 偶尔一致", "❌ 无固定角色", "待核验"],
+          "description": "账号内不同视频间角色是否统一"
+        },
+        "interaction_style": {
+          "type": "string",
+          "enum": ["引导@好友", "提问互动", "金句截图", "无运营", "待核验"],
+          "description": "看结尾引导和评论区运营"
+        },
+        "benchmark_judgment": {
+          "type": "string",
+          "enum": ["值得对标", "参考", "不相关", "待判断"],
+          "description": "创作者的综合判断"
+        }
+      }
+    },
+
+    "_scoring": {
+      "type": "object",
+      "description": "评分维度（1-5分，Claude 自动计算）",
+      "properties": {
+        "interaction_strength": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "ip_transferability": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "production_feasibility": { "type": "integer", "minimum": 1, "maximum": 5, "description": "AI工具能否稳定复刻，分数越高越容易" }
+      }
+    },
+
+    "data_confidence": {
+      "type": "string",
+      "enum": ["OpenCLI", "待核验", "Chrome核验", "人类已确认"],
+      "description": "数据可信度。人类填写核验列后自动升级为 人类已确认"
+    },
+    "collect_method": {
+      "type": "string",
+      "enum": ["OpenCLI", "Chrome核验", "手动补录"]
+    },
+    "collected_at": {
+      "type": "string",
+      "description": "采集时间 Asia/Shanghai，格式 YYYY-MM-DD HH:mm"
+    }
+  }
+}

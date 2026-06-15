@@ -1,0 +1,21 @@
+{
+  "name": "feishu-agent-gateway",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Local Feishu event gateway with HTTP callback and long-connection transports.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:ws": "node long-connection-client.js",
+    "check": "node --check server.js && node --check long-connection-client.js && node --check inbox.js && node --check remote-control.js && node --check remote-worker.js && node --check scripts/verify-remote-control.js",
+    "start:ws:task": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/start-long-connection.ps1",
+    "inbox": "node inbox.js",
+    "remote-worker": "node remote-worker.js",
+    "remote-worker:watch": "node remote-worker.js watch",
+    "remote-worker:list": "node remote-worker.js list",
+    "verify:remote": "node scripts/verify-remote-control.js"
+  },
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.66.1"
+  }
+}
