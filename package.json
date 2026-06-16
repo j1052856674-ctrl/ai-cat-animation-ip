@@ -12,5 +12,8 @@
   "type": "commonjs",
   "dependencies": {
     "js-yaml": "^4.2.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.0"
   }
 }

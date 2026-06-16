@@ -42,3 +42,11 @@ Thumbs.db
 tools/feishu-agent-gateway/config.json
 tools/feishu-agent-gateway/runtime/
 tools/feishu-agent-gateway/cloudflared/config.yml
+
+# Data files (raw collected data, not version controlled)
+data/
+
+
+# Temporary files
+image.png
+

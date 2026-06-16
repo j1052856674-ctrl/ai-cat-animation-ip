@@ -1,0 +1,1 @@
+# Cover prompt generation script

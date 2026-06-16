@@ -1,0 +1,1 @@
+# Script outline generation helper

@@ -1,0 +1,28 @@
+[
+  {
+    "platform": "抖音",
+    "url": "https://www.douyin.com/video/7642497561103111013",
+    "fields": {
+      "title": "未找到",
+      "author": "我的",
+      "likes": "未找到",
+      "comments": "未找到",
+      "published_at": "未找到",
+      "shares": "未找到"
+    },
+    "screenshot": "E:\\ai-cat-animation-ip\\scripts\\playwright-test-douyin.png"
+  },
+  {
+    "platform": "小红书",
+    "url": "https://www.xiaohongshu.com/explore/65e8c9df0000000026035d9a6",
+    "fields": {
+      "title": "未找到",
+      "author": "未找到",
+      "likes": "未找到",
+      "collects": "未找到",
+      "comments": "未找到",
+      "published_at": "未找到"
+    },
+    "screenshot": "E:\\ai-cat-animation-ip\\scripts\\playwright-test-xiaohongshu.png"
+  }
+]

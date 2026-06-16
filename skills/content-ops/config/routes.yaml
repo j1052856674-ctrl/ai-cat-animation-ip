@@ -1,5 +1,5 @@
 # routes.yaml — 触发词路由配置
-# 定义：触发词 → 目标模块 → 必需输入 → 缺失输入处理 → headless默认行为
+# 定义：触发词 → 目标 Skill → 必需输入 → 缺失输入处理
 
 routes:
   - triggers:
@@ -7,67 +7,63 @@ routes:
       - "验证方向"
       - "采集数据"
       - "看效果数据"
-    target_module: "00-competitor-data"
+    target_skill: "competitor-intel"
     required_inputs:
       - name: "采样关键词或方向"
         type: "user"
         missing: "使用 content/竞品调研数据库.md 默认关键词池"
     missing_input_handling: "用默认关键词池采样；OpenCLI 不可用时提示手动采集路径"
-    headless_default: "从 content/竞品调研数据库.md 取 P0 关键词 × limit=10 采集，时间窗口过滤(≤30d)，去重+同账号≤3条，搜索级标注后写入飞书"
 
   - triggers:
       - "推荐选题"
       - "下一条拍什么"
       - "选题建议"
-    target_module: "02-topic"
+    target_skill: "topic-recommendation"
     required_inputs:
       - name: "竞品样本"
         type: "dependency"
-        source: "00-competitor-data"
-        missing: "先检查是否有近期竞品样本；不足时路由到 00-competitor-data"
+        source: "competitor-intel"
+        missing: "先检查是否有近期竞品样本；不足时路由到 competitor-intel"
       - name: "content/账号策略.md"
         type: "file"
       - name: "content/历史作品数据库.md"
         type: "file"
         missing: "新账号可跳过历史数据；仅基于策略+竞品样本推荐"
-    missing_input_handling: "无竞品样本→路由到 00-competitor-data。无历史数据→新账号模式，覆盖2-3个方向做测试"
-    headless_default: "生成5条选题卡，优先级按策略匹配度排序，覆盖至少2个内容支柱"
+    missing_input_handling: "无竞品样本→路由到 competitor-intel。无历史数据→新账号模式"
 
   - triggers:
       - "写脚本"
       - "出脚本"
       - "这条怎么拍"
-    target_module: "03-script"
+    target_skill: "script-creation"
     required_inputs:
       - name: "选题卡"
         type: "dependency"
-        source: "02-topic"
+        source: "topic-recommendation"
         missing: "先引导生成临时选题卡或让用户指定选题方向"
       - name: "content/账号策略.md"
         type: "file"
-    missing_input_handling: "缺选题卡→先自动生成1条临时选题卡（基于策略P0选题），用户确认后继续；不直接卡死"
-    headless_default: "取最近1条选题卡，生成脚本大纲；如无选题卡则取P0第一条默认选题"
+    missing_input_handling: "缺选题卡→先自动生成1条临时选题卡，用户确认后继续"
 
   - triggers:
       - "做封面"
       - "出封面"
       - "封面和标题"
-    target_module: "04-cover"
+    target_skill: "cover-design"
     required_inputs:
       - name: "脚本大纲"
         type: "dependency"
-        source: "03-script"
+        source: "script-creation"
         missing: "先引导生成临时脚本大纲或让用户提供核心内容要点"
       - name: "content/账号策略.md"
         type: "file"
-    missing_input_handling: "缺脚本大纲→先基于选题卡生成临时脚本大纲；缺选题卡→继续回退到临时选题卡生成"
-    headless_default: "取最近1条脚本大纲；如无则取选题卡+P0第一条生成临时脚本，再出封面方案"
+    missing_input_handling: "缺脚本大纲→先基于选题卡生成临时脚本大纲"
 
   - triggers:
       - "复盘"
       - "分析数据"
       - "看看昨天那条"
-    target_module: "05-review"
+    target_skill: "post-review"
     required_inputs:
       - name: "发布数据"
         type: "dependency"
@@ -75,38 +71,34 @@ routes:
         missing: "降级为简单数据记录；不执行深度诊断"
       - name: "作品数>=10"
         type: "gate"
-        missing: "新人期作品数<10→仅简单数据记录，不输出归因结论"
-    missing_input_handling: "数据缺失→提示手动输入核心指标。作品数<10→降级为简单数据记录，告知新人期阈值"
-    headless_default: "数据缺失时输出空白数据模板等待手动填充；不输出归因结论"
+        missing: "新人期作品数<10→仅简单数据记录"
+    missing_input_handling: "数据缺失→提示手动输入核心指标。作品数<10→降级"
 
   - triggers:
       - "更新策略"
       - "调整方向"
       - "重新定位"
-    target_module: "01-strategy"
+    target_skill: "strategy-maintenance"
     required_inputs:
       - name: "复盘结论"
         type: "dependency"
-        source: "05-review"
+        source: "post-review"
         missing: "提示先执行复盘；无足够数据时不调整策略"
-    missing_input_handling: "无复盘结论→提示先执行05-review。新人期作品数<10→暂不启用策略维护"
-    headless_default: "无复盘数据时暂停，不自动调整策略"
+    missing_input_handling: "无复盘结论→提示先执行 post-review。新人期暂不启用"
 
   - triggers:
       - "从选题开始"
       - "来一条完整的"
-    target_module: "chain: 02-topic → 03-script → 04-cover"
+    target_skill: "chain: topic-recommendation → script-creation → cover-design"
     required_inputs:
       - name: "content/账号策略.md"
         type: "file"
     missing_input_handling: "每个子环节按各自 missing_input_handling 降级"
-    headless_default: "串联执行：生成选题卡→生成脚本大纲→生成封面方案，使用P0默认选题"
 
   - triggers:
       - "第一次使用"
       - "新手启动"
       - "帮我开始"
-    target_module: "06-onboarding"
+    target_skill: "content-ops"
     required_inputs: []
     missing_input_handling: "无依赖；检查 content/*.md / OpenCLI / lark-cli / Chrome 状态"
-    headless_default: "执行环境检查，输出最小可行路径（不依赖外部工具）"

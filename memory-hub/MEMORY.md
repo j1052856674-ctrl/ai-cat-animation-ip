@@ -28,3 +28,8 @@ Legacy `.claude/memory/` exists as an import source only; new durable project fa
 - windows-powershell-cli-spawn-and-encoding: Lesson on invoking `.ps1` CLIs and preserving UTF-8 Chinese payloads on Windows; details in `lessons/windows-powershell-cli-spawn-and-encoding.md`.
 - feishu-gateway-public-callback-vs-long-connection: Decision to evaluate Feishu long-connection mode before buying a domain for stable HTTP callback; details in `decisions/feishu-gateway-public-callback-vs-long-connection.md`.
 - feishu-gateway-windows-cli-shim-timeout: Lesson that Windows npm `.ps1`/`.cmd` shims can hang/fail under Node spawn; use native `lark-cli.exe` for gateway replies; details in `lessons/feishu-gateway-windows-cli-shim-timeout.md`.
+- crawl-strategy-decision: 采集方案选型——基于OpenCLI + Browser模式；details in `decisions/crawl-strategy-decision.md`（已废弃Evil0ctal/Docker方案）.
+- python-314-pydantic-fail: Python 3.14无法构建pydantic_core，本地部署失败；details in `lessons/python-314-pydantic-fail.md`.
+- playwright-social-crawl-patterns: Playwright采集两层策略+反模式（硬编码RAW_DATA不是采集）；details in `decisions/playwright-social-crawl-patterns.md`.
+- keyword-strategy-optimization: 关键词四维组合法+方向可行性判断框架+质量评估指标；details in `decisions/keyword-strategy-optimization.md`.
+- skill-split-content-ops: 从单体 content-ops 拆分为 6 个独立 Skill + 总控；details in `decisions/skill-split-content-ops.md`.
