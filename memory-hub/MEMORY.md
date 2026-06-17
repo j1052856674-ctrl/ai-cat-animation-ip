@@ -22,6 +22,7 @@ Project-local UAM index. Read this before legacy `.claude/memory` for durable pr
 - opencli-douyin-interaction-data-zeros: Lesson on 抖音 search returning 0 for plays/comments/shares, requiring Chrome verification; details in `lessons/opencli-douyin-interaction-data-zeros.md`.
 - collection-round-1-complete: 首轮竞品采集完成——74 条入飞书 Base，top-20 人类核验清单已就绪；details in `status/collection-round-1-complete.md`。
 - lark-cli-batch-create-datetime-epoch: Lesson on lark-cli datetime 字段必须用 epoch 毫秒，字符串格式均失败；details in `lessons/lark-cli-batch-create-datetime-epoch.md`。
+- video-analysis-skill-design: 新增零依赖视频分析 Skill，组合 ALBEDO 字幕/前处理思路 + Rico3cats 视频视觉分析结构；details in `decisions/video-analysis-skill-design.md`。
 
 Legacy `.claude/memory/` exists as an import source only; new durable project facts should be written here.
 - feishu-gateway-command-boundary: Decision to keep Feishu gateway as a precise allowlisted command router with inbox fallback; details in `decisions/feishu-gateway-command-boundary.md`.

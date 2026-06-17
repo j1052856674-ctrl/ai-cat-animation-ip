@@ -1,0 +1,244 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "video-analysis.schema.json",
+  "title": "Video Analysis Result",
+  "description": "Structured short-video analysis for hook, conflict, emotion, pacing, and reusable formula.",
+  "type": "object",
+  "required": [
+    "analysis_id",
+    "input",
+    "summary",
+    "timeline",
+    "hook",
+    "conflicts",
+    "emotion_curve",
+    "pacing",
+    "replicable_formula",
+    "quality_control"
+  ],
+  "properties": {
+    "analysis_id": {
+      "type": "string",
+      "pattern": "^video-analysis-\\d{8}-\\d{3}$"
+    },
+    "input": {
+      "type": "object",
+      "required": ["source_type", "input_mode"],
+      "properties": {
+        "source_type": {
+          "type": "string",
+          "enum": ["url", "mp4", "transcript", "frames", "mixed"]
+        },
+        "source": { "type": "string" },
+        "platform": {
+          "type": "string",
+          "enum": ["douyin", "xiaohongshu", "bilibili", "youtube", "unknown"]
+        },
+        "duration_seconds": { "type": ["number", "null"], "minimum": 0 },
+        "input_mode": {
+          "type": "string",
+          "enum": ["video_plus_transcript", "frames_plus_transcript", "transcript_only", "manual_notes"]
+        },
+        "provider": { "type": ["string", "null"] },
+        "model": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "summary": {
+      "type": "object",
+      "required": ["one_liner", "overall_score", "confidence"],
+      "properties": {
+        "one_liner": { "type": "string" },
+        "overall_score": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "content_type": { "type": "string" },
+        "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+        "main_strength": { "type": "string" },
+        "main_risk": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "timeline": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/timelineSegment"
+      }
+    },
+    "hook": {
+      "type": "object",
+      "required": ["time_range", "type", "strength", "evidence", "confidence"],
+      "properties": {
+        "time_range": { "$ref": "#/definitions/timeRange" },
+        "type": {
+          "type": "string",
+          "enum": ["visual_shock", "suspense", "pain_point", "conflict", "contrast", "question", "sound", "text_overlay", "none", "unknown"]
+        },
+        "strength": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "description": { "type": "string" },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/evidence" }
+        },
+        "retention_risk": { "type": "string" },
+        "confidence": { "type": "string", "enum": ["high", "medium", "low"] }
+      },
+      "additionalProperties": false
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["time_range", "type", "intensity", "trigger", "evidence", "confidence"],
+        "properties": {
+          "time_range": { "$ref": "#/definitions/timeRange" },
+          "type": {
+            "type": "string",
+            "enum": ["character", "goal", "expectation", "identity", "visual", "emotional", "social", "none", "unknown"]
+          },
+          "intensity": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "trigger": { "type": "string" },
+          "escalation": { "type": "string" },
+          "resolution": { "type": "string" },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#/definitions/evidence" }
+          },
+          "confidence": { "type": "string", "enum": ["high", "medium", "low"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "emotion_curve": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["time_range", "emotion", "level", "evidence"],
+        "properties": {
+          "time_range": { "$ref": "#/definitions/timeRange" },
+          "emotion": {
+            "type": "string",
+            "enum": ["curiosity", "surprise", "tension", "relief", "humor", "warmth", "empathy", "satisfaction", "neutral", "unknown"]
+          },
+          "level": { "type": "integer", "minimum": 0, "maximum": 100 },
+          "evidence": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/evidence" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "pacing": {
+      "type": "object",
+      "required": ["rhythm", "turning_points", "retention_risks"],
+      "properties": {
+        "rhythm": {
+          "type": "string",
+          "enum": ["fast", "medium", "slow", "uneven", "unknown"]
+        },
+        "turning_points": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["time_range", "function"],
+            "properties": {
+              "time_range": { "$ref": "#/definitions/timeRange" },
+              "function": {
+                "type": "string",
+                "enum": ["setup", "hook", "conflict", "escalation", "reversal", "payoff", "cta", "unknown"]
+              },
+              "description": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "retention_risks": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "replicable_formula": {
+      "type": "object",
+      "required": ["formula", "template", "what_to_copy", "what_not_to_copy"],
+      "properties": {
+        "formula": { "type": "string" },
+        "template": { "type": "string" },
+        "what_to_copy": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "what_not_to_copy": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "next_test": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "quality_control": {
+      "type": "object",
+      "required": ["visual_evidence_available", "transcript_available", "confidence", "missing_inputs", "hallucination_risks"],
+      "properties": {
+        "visual_evidence_available": { "type": "boolean" },
+        "transcript_available": { "type": "boolean" },
+        "confidence": { "type": "string", "enum": ["high", "medium", "low"] },
+        "missing_inputs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "hallucination_risks": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "definitions": {
+    "timeRange": {
+      "type": "string",
+      "pattern": "^\\d+(\\.\\d+)?-\\d+(\\.\\d+)?s$"
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["type", "description"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["visual", "audio", "text", "metadata", "inference"]
+        },
+        "description": { "type": "string" },
+        "confidence": {
+          "type": "string",
+          "enum": ["high", "medium", "low"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "timelineSegment": {
+      "type": "object",
+      "required": ["time_range", "visual", "function", "evidence"],
+      "properties": {
+        "time_range": { "$ref": "#/definitions/timeRange" },
+        "visual": { "type": "string" },
+        "audio_text": { "type": "string" },
+        "function": {
+          "type": "string",
+          "enum": ["hook", "setup", "conflict", "escalation", "reversal", "payoff", "cta", "filler", "unknown"]
+        },
+        "evidence": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/evidence" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
+
